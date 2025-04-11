@@ -12,17 +12,20 @@ public class ButtonHandler : MonoBehaviour
     public void OnPlaceButtonClicked()
     {
         statusText.text = "Place";
+        ModeHandler.setPlaceMode();
     }
 
     // Move
     public void OnMoveButtonClicked()
     {
         statusText.text = "Move";
+        ModeHandler.setMoveMode();
     }
 
     // Delete
     public void OnDeleteButtonClicked()
     {
         statusText.text = "Delete";
+        ModeHandler.setDeleteMode();
     }
 }
