@@ -5,6 +5,12 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using UnityEngine.InputSystem;
 
+// For button interactions
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using TMPro;
+
+
 /*
  * Required by this script:
  * - AR Plane Manager in XR Origin
@@ -25,6 +31,15 @@ public class PlaceMultipleObjectsOnPlaneNewInputSystem : MonoBehaviour
     [Tooltip("Instantiates this prefab on a plane at the touch location.")]
     GameObject placedPrefab;
 
+    // For button interactions 
+    [SerializeField]
+    private EventSystem eventSystem;
+    [SerializeField]
+    private GraphicRaycaster uiRaycaster;
+
+    // DEBUG
+    public TextMeshProUGUI statusText;
+
     // Newly instantiated object
     GameObject spawnedObject;
 
@@ -44,11 +59,27 @@ public class PlaceMultipleObjectsOnPlaneNewInputSystem : MonoBehaviour
         controls = new TouchControls();
         
         // If there is touch input being performed. call the OnPress function.
+        /*
         controls.control.touch.performed += ctx =>
         {
             if (ctx.control.device is Pointer device)
             {
                 OnPress(device.position.ReadValue());
+            }
+        };
+        */
+
+        controls.control.touch.performed += ctx =>
+        {
+            if (ctx.control.device is Pointer device)
+            {
+                Vector2 pos = device.position.ReadValue();
+
+                // Add this check to skip if touching UI
+                if (IsTouchOverUI(pos))
+                    return;
+
+                OnPress(pos);
             }
         };
     }
@@ -80,4 +111,20 @@ public class PlaceMultipleObjectsOnPlaneNewInputSystem : MonoBehaviour
             spawnedObject.transform.rotation = Quaternion.LookRotation(lookPos);
         }
     }
+
+    private bool IsTouchOverUI(Vector2 screenPosition)
+    {
+        PointerEventData pointerData = new PointerEventData(eventSystem)
+        {
+            position = screenPosition
+        };
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        uiRaycaster.Raycast(pointerData, results);
+
+        statusText.text = "Count: " + results.Count;
+
+        return results.Count > 0;
+    }
+
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using UnityEngine.InputSystem;
@@ -49,6 +50,23 @@ public class PlaceOnPlane : PressInputBase
         // or if there is existing touch input
         if (Pointer.current == null || isPressed == false)
             return;
+
+
+
+        // Check if there's a valid touch
+        if (Touchscreen.current == null || Touchscreen.current.primaryTouch.press.isPressed == false)
+            return;
+
+        var touch = Touchscreen.current.primaryTouch;
+
+        // This is the fix: use the touch's deviceId as the pointerId
+        int pointerId = touch.touchId.ReadValue();
+
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject(pointerId))
+            return;
+
+
+
 
         // Store the current touch position
         var touchPosition = Pointer.current.position.ReadValue();
