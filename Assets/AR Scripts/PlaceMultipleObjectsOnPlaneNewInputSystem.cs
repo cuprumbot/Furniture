@@ -85,15 +85,15 @@ public class PlaceMultipleObjectsOnPlaneNewInputSystem : MonoBehaviour
 
     void OnPress(Vector3 position)
     {
-        if (ModeHandler.placeMode)
+        if (ModeHandler.mode == Mode.Place)
         {
             placeObject(position);
         } 
-        else if (ModeHandler.moveMode)
+        else if (ModeHandler.mode == Mode.Move)
         {
             moveObject(position);
         }
-        else if (ModeHandler.deleteMode)
+        else if (ModeHandler.mode == Mode.Delete)
         {
             deleteObject(position);
         }

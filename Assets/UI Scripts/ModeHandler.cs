@@ -2,37 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Mode
+{
+    None,
+    Place,
+    Move,
+    Delete,
+    Rotate,
+    Resize
+}
+
 public class ModeHandler : MonoBehaviour
 {
-    public static bool placeMode = false;
-    public static bool moveMode = false;
-    public static bool deleteMode = false; 
+    public static Mode mode = Mode.None;
 
     public static void setPlaceMode ()
     {
-        placeMode = true;
-        moveMode = false;
-        deleteMode = false;
+        mode = Mode.Place;
     }
 
     public static void setMoveMode ()
     {
-        moveMode = true;
-        placeMode = false;
-        deleteMode = false;
+        mode = Mode.Move;
     }
 
     public static void setDeleteMode ()
     {
-        deleteMode = true;
-        placeMode = false;
-        moveMode = false;
+        mode = Mode.Delete;
     }
 
-    public static void setNoMode ()
+    public static void setRotateMode ()
     {
-        placeMode = false;
-        moveMode = false;
-        deleteMode = false;
+        mode = Mode.Rotate;
+    }
+
+    public static void setResizeMode ()
+    {
+        mode = Mode.Resize;
+    }
+
+    public static void setNoneMode ()
+    {
+        mode = Mode.None;
     }
 }
