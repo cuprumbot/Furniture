@@ -133,6 +133,8 @@ public class PlaceMultipleObjectsOnPlaneNewInputSystem : MonoBehaviour
                 {
                     selectedObject = hitObject;
                     statusText.text = "Selected object";
+
+                    selectedObject.GetComponent<Outline>().enabled = true;
                 }
                 else
                 {
@@ -158,6 +160,8 @@ public class PlaceMultipleObjectsOnPlaneNewInputSystem : MonoBehaviour
                 selectedObject.transform.rotation = Quaternion.LookRotation(lookPos);
 
                 statusText.text = "Moved object";
+
+                selectedObject.GetComponent<Outline>().enabled = false;
 
                 // Done moving
                 selectedObject = null;
