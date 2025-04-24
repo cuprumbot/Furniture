@@ -213,7 +213,8 @@ public class PlaceMultipleObjectsOnPlaneNewInputSystem : MonoBehaviour
         List<RaycastResult> results = new List<RaycastResult>();
         uiRaycaster.Raycast(pointerData, results);
 
-        statusText.text = "Count: " + results.Count;
+        // Debug text no longer needed
+        //statusText.text = "Count: " + results.Count;
 
         return results.Count > 0;
     }
