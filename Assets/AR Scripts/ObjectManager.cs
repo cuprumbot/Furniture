@@ -24,12 +24,12 @@ using TMPro;
 // Sanity check
 [RequireComponent(typeof(ARRaycastManager))]
 
-public class PlaceMultipleObjectsOnPlaneNewInputSystem : MonoBehaviour
+public class ObjectManager : MonoBehaviour
 {
     // Prefab to instantiate
     [SerializeField]
     [Tooltip("Instantiates this prefab on a plane at the touch location.")]
-    GameObject placedPrefab;
+    public GameObject placedPrefab;
 
     // For button interactions 
     [SerializeField]
