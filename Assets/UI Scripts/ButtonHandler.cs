@@ -31,16 +31,4 @@ public class ButtonHandler : MonoBehaviour
         statusText.text = "Delete";
         ModeHandler.setDeleteMode();
     }
-
-    public void OnTableButtonClicked()
-    {
-        statusText.text = "Table";
-        xrOrigin.GetComponent<ObjectManager>().placedPrefab = table;
-    }
-
-    public void OnChairButtonClicked()
-    {
-        statusText.text = "Chair";
-        xrOrigin.GetComponent<ObjectManager>().placedPrefab = chair;
-    }
 }

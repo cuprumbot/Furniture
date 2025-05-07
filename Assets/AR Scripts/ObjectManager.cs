@@ -26,10 +26,8 @@ using TMPro;
 
 public class ObjectManager : MonoBehaviour
 {
-    // Prefab to instantiate
-    [SerializeField]
-    [Tooltip("Instantiates this prefab on a plane at the touch location.")]
-    public GameObject placedPrefab;
+    // We get the placeable prefab from here
+    public ModelMenu modelMenu;
 
     // For button interactions 
     [SerializeField]
@@ -108,7 +106,7 @@ public class ObjectManager : MonoBehaviour
             var hitPose = hits[0].pose;
 
             // Instantiated the prefab
-            spawnedObject = Instantiate(placedPrefab, hitPose.position, hitPose.rotation);
+            spawnedObject = Instantiate(modelMenu.prefabToPlace, hitPose.position, hitPose.rotation);
 
             // To make the spawned object always look at the camera. Delete if not needed
             Vector3 lookPos = Camera.main.transform.position - spawnedObject.transform.position;
