@@ -25,19 +25,17 @@ public class ModelMenu : MonoBehaviour
     {
         modelList = Resources.LoadAll<ModelData>("ModelData").ToList();
         PopulateMenu();
+
+        statusText.text = "Ready!";
     }
 
     void PopulateMenu()
     {
-        statusText.text = "Models: " + modelList.Count;
-
         foreach (var model in modelList)
         {
             GameObject button = Instantiate(buttonPrefab, buttonContainer);
 
             button.GetComponentInChildren<TMP_Text>().text = model.name;
-
-
 
             Transform iconTransform = button.transform.Find("Icon");
             if (iconTransform != null)
@@ -45,7 +43,6 @@ public class ModelMenu : MonoBehaviour
                 iconTransform.GetComponent<Image>().sprite = model.icon;
             }
 
-            //button.GetComponentInChildren<Image>().sprite = model.icon;
             button.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     prefabToPlace = model.prefab;

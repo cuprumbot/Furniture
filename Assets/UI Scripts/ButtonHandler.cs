@@ -7,9 +7,17 @@ public class ButtonHandler : MonoBehaviour
 {
     // Text to be modified
     public TextMeshProUGUI statusText;
-    public GameObject xrOrigin;
-    public GameObject table;
-    public GameObject chair;
+
+    // Show and hide elements
+    public DisplayHelper displayHelper;
+
+    // Select
+    public void OnSelectButtonClicked()
+    {
+        statusText.text = "Select";
+        ModeHandler.setSelectMode();
+        displayHelper.toggleModelSelectorVisibility();
+    }
 
     // Place
     public void OnPlaceButtonClicked()

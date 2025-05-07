@@ -16,6 +16,11 @@ public class ModeHandler : MonoBehaviour
 {
     public static Mode mode = Mode.None;
 
+    public static void setSelectMode ()
+    {
+        mode = Mode.Place;
+    }
+
     public static void setPlaceMode ()
     {
         mode = Mode.Place;
