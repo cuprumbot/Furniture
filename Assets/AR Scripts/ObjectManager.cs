@@ -156,10 +156,10 @@ public class ObjectManager : MonoBehaviour
                 Pose hitPose = hits[0].pose;
                 selectedObject.transform.position = hitPose.position;
 
-                // Optional: face camera again
-                Vector3 lookPos = Camera.main.transform.position - selectedObject.transform.position;
-                lookPos.y = 0;
-                selectedObject.transform.rotation = Quaternion.LookRotation(lookPos);
+                // In case we need to reset the rotation of the object
+                // Vector3 lookPos = Camera.main.transform.position - selectedObject.transform.position;
+                // lookPos.y = 0;
+                // selectedObject.transform.rotation = Quaternion.LookRotation(lookPos);
 
                 statusText.text = "Moved object";
 
@@ -224,13 +224,16 @@ public class ObjectManager : MonoBehaviour
                     statusText.text = "Tap farther to rotate";
                 }
 
-                selectedObject.GetComponent<Outline>().enabled = false;
-                selectedObject = null;
+                //selectedObject.GetComponent<Outline>().enabled = false;
+                //selectedObject = null;
             }
             else
             {
                 statusText.text = "No plane hit";
             }
+
+            selectedObject.GetComponent<Outline>().enabled = false;
+            selectedObject = null;
         }
     }
 
@@ -288,7 +291,9 @@ public class ObjectManager : MonoBehaviour
                 else
                 {
                     // Final fallback: project to some fixed Y plane (e.g., ground level)
-                    Plane ground = new Plane(Vector3.up, Vector3.zero);
+                    //Plane ground = new Plane(Vector3.up, Vector3.zero);
+                    Plane ground = new Plane(Vector3.up, selectedObject.transform.position);
+
                     float distance;
                     if (ground.Raycast(ray, out distance))
                     {

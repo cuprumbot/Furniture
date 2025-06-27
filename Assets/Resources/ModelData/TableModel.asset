@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 225b4263d82d1cd469871fe772ff4b5e, type: 3}
   m_Name: TableModel
   m_EditorClassIdentifier: 
-  modelName: myTable
+  modelName: My Table
   prefab: {fileID: 2869901897407334719, guid: e567ce28e515eec409012cd74b3a82be, type: 3}
   icon: {fileID: 21300000, guid: f8a19dff328350b439425307cd754d2f, type: 3}

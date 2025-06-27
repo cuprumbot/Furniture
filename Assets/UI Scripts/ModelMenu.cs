@@ -35,7 +35,7 @@ public class ModelMenu : MonoBehaviour
         {
             GameObject button = Instantiate(buttonPrefab, buttonContainer);
 
-            button.GetComponentInChildren<TMP_Text>().text = model.name;
+            button.GetComponentInChildren<TMP_Text>().text = model.modelName;
 
             Transform iconTransform = button.transform.Find("Icon");
             if (iconTransform != null)
@@ -46,7 +46,7 @@ public class ModelMenu : MonoBehaviour
             button.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     prefabToPlace = model.prefab;
-                    statusText.text = "Clicked: " + model.name;
+                    statusText.text = "Clicked: " + model.modelName;
                 }
             );
         }

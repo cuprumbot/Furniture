@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 225b4263d82d1cd469871fe772ff4b5e, type: 3}
   m_Name: DemoModel
   m_EditorClassIdentifier: 
-  modelName: myDemo
+  modelName: My Demo
   prefab: {fileID: 2869901897407334719, guid: 87ab72b354dfd024197cf2ef29a1197d, type: 3}
   icon: {fileID: 21300000, guid: 6a52de09392dfc24590a47d71cf0cfbd, type: 3}
