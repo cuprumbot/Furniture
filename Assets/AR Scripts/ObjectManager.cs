@@ -95,6 +95,10 @@ public class ObjectManager : MonoBehaviour
         {
             deleteObject(position);
         }
+        else if (ModeHandler.mode == Mode.Rotate)
+        {
+            rotateObject(position);
+        }
     }
 
     private void placeObject (Vector3 position)
@@ -167,6 +171,66 @@ public class ObjectManager : MonoBehaviour
             else
             {
                 statusText.text = "No raycast hit";
+            }
+        }
+    }
+
+
+    private void rotateObject(Vector3 position)
+    {
+        if (selectedObject == null)
+        {
+            // STEP 1: Select object
+            Ray ray = Camera.main.ScreenPointToRay(position);
+            RaycastHit hit;
+
+            LayerMask mask = LayerMask.GetMask("Default");
+            if (Physics.Raycast(ray, out hit, 10f, mask))
+            {
+                GameObject hitObject = hit.collider.gameObject;
+                if (hitObject.CompareTag("PlacedObject"))
+                {
+                    selectedObject = hitObject;
+                    statusText.text = "Selected for rotation";
+
+                    selectedObject.GetComponent<Outline>().enabled = true;
+                }
+                else
+                {
+                    statusText.text = "Bad hit [ Obj: " + hitObject.name + " ] [ Lay: " + LayerMask.LayerToName(hitObject.layer) + " ]";
+                }
+            }
+            else
+            {
+                statusText.text = "No raycast hit";
+            }
+        }
+        else
+        {
+            // STEP 2: Raycast to get world position on plane
+            if (arRaycastManager.Raycast(position, hits, TrackableType.PlaneWithinPolygon))
+            {
+                Pose hitPose = hits[0].pose;
+
+                // Compute direction to look at
+                Vector3 lookDirection = hitPose.position - selectedObject.transform.position;
+                lookDirection.y = 0f; // ignore vertical difference
+                if (lookDirection.sqrMagnitude > 0.001f)
+                {
+                    selectedObject.transform.rotation = Quaternion.LookRotation(lookDirection);
+                    statusText.text = "Rotated object";
+                }
+                else
+                {
+                    statusText.text = "Tap farther to rotate";
+                }
+
+                selectedObject.GetComponent<Outline>().enabled = false;
+                selectedObject = null;
+            }
+            else
+            {
+                statusText.text = "No plane hit";
             }
         }
     }

@@ -39,4 +39,11 @@ public class ButtonHandler : MonoBehaviour
         statusText.text = "Delete";
         ModeHandler.setDeleteMode();
     }
+
+    // Rotate
+    public void OnRotateButtonClicked()
+    {
+        statusText.text = "Rotate";
+        ModeHandler.setRotateMode();
+    }
 }
