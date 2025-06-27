@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.IO;
 
 public class ScreenshotManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class ScreenshotManager : MonoBehaviour
     public void TakeScreenshot()
     {
         string filename = $"ss_{System.DateTime.Now:yyyyMMdd_HHmmss}.png";
-        string path = System.IO.Path.Combine(Application.persistentDataPath, filename);
+        string path = Path.Combine(Application.persistentDataPath, filename);
 
         ScreenCapture.CaptureScreenshot(filename);
         StartCoroutine(ConfirmScreenshotSaved(path));
@@ -23,11 +24,12 @@ public class ScreenshotManager : MonoBehaviour
 
     private IEnumerator ConfirmScreenshotSaved(string path)
     {
+        // Wait a bit to ensure screenshot is saved
         yield return new WaitForSeconds(1f);
 
-        if (System.IO.File.Exists(path))
+        if (File.Exists(path))
         {
-            statusText.text = "Screenshot saved! " + path;
+            statusText.text = "Screenshot saved! Sharing...";
             ShareScreenshot(path);
         }
         else
@@ -38,33 +40,18 @@ public class ScreenshotManager : MonoBehaviour
 
     private void ShareScreenshot(string imagePath)
     {
-#if UNITY_ANDROID
-    statusText.text = "Starting share...";
+        // In case you need to redo this:
+        // Windows > Package Manager
+        // Add from URL:
+        // https://github.com/yasirkula/UnityNativeShare.git
 
-    AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
-    AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
+        new NativeShare()
+            .AddFile(imagePath)
+            .SetSubject("Screenshot")
+            .SetText("Furniture Screenshot")
+            .SetTitle("Share Screenshot")
+            .Share();
 
-    intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_SEND"));
-    intentObject.Call<AndroidJavaObject>("setType", "image/*");
-
-    intentObject.Call<AndroidJavaObject>("addFlags", 1); // FLAG_GRANT_READ_URI_PERMISSION
-
-    AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri");
-    AndroidJavaClass fileClass = new AndroidJavaClass("java.io.File");
-
-    AndroidJavaObject fileObject = new AndroidJavaObject("java.io.File", imagePath);
-    AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("fromFile", fileObject);
-
-    intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
-
-    AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-    AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity");
-
-    AndroidJavaObject chooser = intentClass.CallStatic<AndroidJavaObject>(
-        "createChooser", intentObject, "Share Screenshot");
-
-    currentActivity.Call("startActivity", chooser);
-    statusText.text = "Finished share!";
-#endif
+        statusText.text = "Sharing...";
     }
 }
