@@ -18,6 +18,9 @@ public class ModeHandler : MonoBehaviour
 
     public static void setSelectMode ()
     {
+        // This is intentional
+        // After choosing a model, we are ready to place it
+        // Also, Mode.Select doesn't even exist
         mode = Mode.Place;
     }
 
