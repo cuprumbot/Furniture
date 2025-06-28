@@ -24,13 +24,14 @@ public class ScreenshotManager : MonoBehaviour
 
     private IEnumerator ConfirmScreenshotSaved(string path)
     {
-        // Wait a bit to ensure screenshot is saved
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f); // wait for the file to save
 
-        if (File.Exists(path))
+        if (System.IO.File.Exists(path))
         {
-            statusText.text = "Screenshot saved! Sharing...";
-            ShareScreenshot(path);
+            statusText.text = "Screenshot saved.";
+
+            SaveToGallery(path); // step 2: make visible in Android Gallery
+            ShareScreenshot(path); // step 3: share using NativeShare
         }
         else
         {
@@ -52,6 +53,29 @@ public class ScreenshotManager : MonoBehaviour
             .SetTitle("Share Screenshot")
             .Share();
 
-        statusText.text = "Sharing...";
+        //statusText.text = "Sharing...";
+    }
+
+    private void SaveToGallery(string path)
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        try
+        {
+            using (AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            {
+                AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+
+                using (AndroidJavaClass pluginClass = new AndroidJavaClass("edu.galileo.innovacion.furniture.SaveImageToGallery"))
+                {
+                    pluginClass.CallStatic("Save", activity, path);
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Error saving to gallery: " + e.Message);
+            statusText.text = "Error saving to gallery: " + e.Message;
+        }
+#endif
     }
 }
